@@ -1,0 +1,3 @@
+    INSERT INTO MEMBER (id, name) VALUES(1,'SPARK')
+    INSERT INTO MEMBER (id, name) VALUES(2, 'GDHONG')
+    INSERT INTO MEMBER (id, name) VALUES(3, 'GDGO')
