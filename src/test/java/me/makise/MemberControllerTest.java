@@ -32,7 +32,7 @@ class MemberControllerTest {
     @DisplayName("회원정보 리스트 유청")
     @Test
     void getAllMembers() throws Exception {
-        Member m = new Member("Makise7710");
+        Member m = new Member();
         Member savedMember = memberRepository.save(m);
 
         final ResultActions result = mockMvc.perform(get("/member").accept(MediaType.APPLICATION_JSON));
