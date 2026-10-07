@@ -1,37 +1,33 @@
 package me.makise;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-
-
-
-    public class QuizController {
-    @GetMapping
-    public ResponseEntity<String> quiz(@RequestParam("code") int code){
-        switch(code){
+public class QuizController {
+    @GetMapping("/quiz")
+    public ResponseEntity<String> quiz(@RequestParam("code") int code) {
+        switch (code) {
             case 1:
-                return ResponseEntity.created(null).body("Created");
+                return ResponseEntity.created(null).body("Created!");
             case 2:
-                return ResponseEntity.badRequest().body("Bad Resquest!");
+                return ResponseEntity.badRequest().body("Bad Request!");
             default:
-                return ResponseEntity.ok().body("ok");
-
-
+                return ResponseEntity.ok().body("OK!");
         }
     }
-    @PostMapping("/quiz")
-    public  ResponseEntity<String> quiz2(@RequestBody int code){
-        switch (code){
-            case 1:
-                return ResponseEntity.status(403).body("Forbiden");
-            default:
-                return ResponseEntity.ok().body("ok");
 
+    @PostMapping("/quiz")
+    public ResponseEntity<String> quiz2(@RequestBody Code code) {
+        switch (code.value()) {
+            case 1:
+                return ResponseEntity.status(403).body("Forbidden!");
+            default:
+                return ResponseEntity.ok().body("OK!");
         }
     }
 
 }
 
-record Code(int value){}
+
+record Code(int value) {}
