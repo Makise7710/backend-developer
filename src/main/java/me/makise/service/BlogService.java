@@ -1,17 +1,18 @@
 package me.makise.service;
+import lombok.RequiredArgsConstructor;
+import me.makise.domain.Article;
+import me.makise.dto.AddArticleRequest;
+import me.makise.repository.BlogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+@Service
+@RequiredArgsConstructor
+public class BlogService {
+    //@Autowired
+    private final BlogRepository blogRepository;
 
-
-
-@SpringBootApplication
-
-public class SpringBootDeveloperApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBootDeveloperApplication.class, args);
-
+    public Article save(AddArticleRequest dto){
+        return blogRepository.save(dto. toEntity());
     }
-
-
 }
