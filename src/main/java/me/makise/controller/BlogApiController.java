@@ -1,21 +1,16 @@
+
 package me.makise.controller;
+
 
 import lombok.RequiredArgsConstructor;
 import me.makise.domain.Article;
 import me.makise.dto.AddArticleRequest;
-import me.makise.dto.ArticleRespones;
+import me.makise.dto.ArticleResponse;
 import me.makise.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 @RequiredArgsConstructor
@@ -24,26 +19,41 @@ public class BlogApiController {
     private final BlogService blogService;
 
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request){
+    public ResponseEntity<ArticleResponse> addArticle(@RequestBody AddArticleRequest request) {
         Article savedArticle = blogService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ArticleResponse(savedArticle));
 
     }
 
 
     @GetMapping("/api/articles")
-    public ResponseEntity<List<Article>> getAllArticles(){
-        List<Article> articleList = blogService.getAll();
-        List<ArticleRespones> articleResponesList = new ArrayList<>();
-        for(Article article; articleList) {
-            ArticleRespones ar = new ArticleRespones(article);
-            articleResponesList.add(ar);
-        }
-        List<ArticleResponse> result = blodService.getAll()
+    public ResponseEntity<List<ArticleResponse>> getAllArticles() {
+
+//        List<Article> articleList = blogService.getAll();
+//        List<ArticleResponse> articleResponseList = new ArrayList<>();
+//        for(Article article : articleList) {
+//            ArticleResponse ar = new ArticleResponse(article);
+//            articleResponseList.add(ar);
+//        }
+        List<ArticleResponse> articleResponseList = blogService.getAll()
                 .stream()
-                .map(ArticleResponse::new)Stream<ArticleRespones>
+                //.map(a->new ArticleResponse(a))
+                .map(ArticleResponse::new)
                 .toList();
-            return ResponseEntity.ok().body(articleList);
-        }
+        return ResponseEntity.ok().body(articleResponseList);
     }
+
+    @GetMapping("/api/articles/{id}")
+    public ResponseEntity<ArticleResponse> getArticle(
+            @PathVariable Long id) {
+
+
+        return ResponseEntity.ok()
+                .body(new ArticleResponse(blogService.findById(id)));
+    }
+
+
+    // public BlogApiController(BlogService blogService){
+    //   this.blogService = service;
+    //}
 }
