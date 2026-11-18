@@ -1,11 +1,12 @@
 
 package me.makise.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.makise.domain.Article;
 import me.makise.dto.AddArticleRequest;
+import me.makise.dto.UpdateArticleRequest;
 import me.makise.repository.BlogRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,18 +14,31 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BlogService {
-    //@Autowired
+
     private final BlogRepository blogRepository;
 
     public Article save(AddArticleRequest dto){
-        return blogRepository.save(dto. toEntity());
+        return blogRepository.save(dto.toEntity());
     }
 
     public List<Article> getAll(){
         return blogRepository.findAll();
     }
+
     public Article findById(Long id) {
         return blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    }
+
+    public void delete(Long id) {
+        blogRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Article updateArticle(long id, UpdateArticleRequest request) {
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+        article.update(request.getTitle(), request.getContent());
+        return article;
     }
 }
